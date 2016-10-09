@@ -1,0 +1,66 @@
+{% extends "base1.html" %}
+{% import "_macros.html" as macros %}
+
+{% block title %}{{ user.username }}的关注{% endblock %}
+{% block page_content1 %}
+<div class="page-header">
+    <img class="img-rounded profile-thumbnail2" src="{{ user.gravatar(size=169) }}">
+
+    <h3>{{ user.username }}</h3>
+    {% if current_user.can(Permission.FOLLOW) and user !=current_user %}
+        {% if not current_user.is_following(user) %}
+        <a href="{{ url_for('main.follow',username=user.username) }}" class="btn btn-primary">关注</a>
+        {% else %}
+        <a href="{{ url_for('main.unfollow',username=user.username) }}" class="btn btn-default">取消关注</a>
+        {% endif %}
+    {% endif %}
+    <a href="{{ url_for('main.followed_by',username=user.username) }}">
+        关注<span class="badge">{{ user.followed.count() }}</span>
+    </a>
+    <a href="{{ url_for('main.followers',username=user.username) }}">
+        粉丝<span class="badge">{{ user.followers.count() }}</span>
+    </a>
+    {% if current_user.is_authenticated and user !=current_user and user.is_following(current_user) %}
+    | <span class="label label-default">关注你</span>
+    {% endif %}
+    {% if user.name or user.location %}
+    <p>
+        {% if user.name %}{{ user.name }}{% endif %}
+        {% if user.location %}{{ user.location }}{% endif %}
+    </p>
+    {% endif %}
+    {% if current_user.is_administrator() %}
+    <p><a href="mailto:{{user.email }}">{{ user.email }}</a></p>
+    {% endif %}
+    {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+    <p>
+        注册时间： {{ moment(user.member_since).format('L') }}<br>
+        最近一次登录： {{ moment(user.last_seen).fromNow() }}
+    </p>
+</div>
+{% endblock %}
+
+{% block page_content2 %}
+<div class="page-header">
+    <h1>{{ user.username }}的关注</h1>
+</div>
+<table class="table table-hover followers">
+    <thead><tr><th>User</th><th>Since</th></tr></thead>
+    {% for follow in follows %}
+    {% if follow.user != user %}
+    <tr>
+        <td>
+            <a href="{{ url_for('.user', username = follow.user.username) }}">
+                <img class="img-rounded" src="{{ follow.user.gravatar(size=32) }}">
+                {{ follow.user.username }}
+            </a>
+        </td>
+        <td>{{ moment(follow.timestamp).format('L') }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, endpoint, username = user.username) }}
+</div>
+{% endblock %}

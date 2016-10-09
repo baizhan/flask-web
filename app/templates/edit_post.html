@@ -1,0 +1,34 @@
+{% extends 'base1.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}{{ current_user.username }}-编辑文章{% endblock %}
+{% block page_content1 %}
+<div class="page-header">
+    <img class="img-rounded profile-thumbnail2" src="{{ current_user.gravatar(size=169) }}">
+
+    <h3>{{ current_user.username }}</h3>
+    {% if current_user.name or current_user.location %}
+    <p>
+        {% if current_user.name %}{{ current_user.name }}{% endif %}
+        {% if current_user.location %}{{ current_user.location }}{% endif %}
+    </p>
+    {% endif %}
+    {% if current_user.is_administrator() %}
+    <p><a href="mailto:{{current_user.email }}">{{ current_user.email }}</a></p>
+    {% endif %}
+    {% if current_user.about_me %}<p>{{ current_user.about_me }}</p>{% endif %}
+    <p>
+        注册时间： {{ moment(current_user.member_since).format('L') }}<br>
+        最近一次登录： {{ moment(current_user.last_seen).fromNow() }}
+    </p>
+</div>
+{% endblock %}
+{% block page_content2 %}
+<div class="page-header">
+    <h1>编辑文章</h1>
+</div>
+<div>
+    {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}
+

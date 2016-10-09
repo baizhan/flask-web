@@ -1,0 +1,49 @@
+{% extends "bootstrap/base.html" %}
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static',filename='basketball.png')}}"
+      type="image/x-icon">
+<link rel="icon" href="{{url_for('static',filename='basketball.png')}}"
+      type="image/x-icon">
+{% endblock %}
+{% block title %}学习笔记{% endblock %}
+{% block navbar %}
+<div class="navbar navbar-inverse navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+			<a class="navbar-brand" href="/">学习笔记</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/python/">Python</a> </li>
+				<li><a href='/bootstrap/'>Bootstrap</a></li>
+				<li><a href='/javascript/'>Javascript</a></li>
+				<li><a href='/css/'>Css</a></li>
+				<li><a href='/html/'>Html</a></li>
+				<li><a href='/mysql/'>Mysql</a></li>
+				<li><a href='/http/'>HTTP</a></li>
+				<li><a href='/secrity/'>网络安全</a></li>
+				<li><a href='/algorithm/'>数据结构与算法</a></li>
+            </ul>
+			{% block button_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+	    {% block page_content1 %}{% endblock %}
+		</div>
+		<div class="col-md-7">
+		{% block page_content2 %}{% endblock %}
+		</div>
+		<div class="col-md-2" style="position:relative">
+		{% block page_content3 %}{% endblock %}
+		
+		</div>
+	</div>
+</div>
+{% endblock %}	
