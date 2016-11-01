@@ -16,8 +16,8 @@ class DevelopmentConfig(Config):
     MAIL_SERVER='smtp.163.com'
     MAIL_PORT=25
     MAIL_USE_TLS=True
-    MAIL_USERNAME='18510861477'
-    MAIL_PASSWORD='DG332415'
+    MAIL_USERNAME=''
+    MAIL_PASSWORD=''
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
                               'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
